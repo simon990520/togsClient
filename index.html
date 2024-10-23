@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Togs</title>
+        <link rel="icon" href="https://airecomed.com/recursos/togs.png" type="image/png">
+        <link href="https://airecomed.com/recursos/styles.css" rel="stylesheet" >
+        <!-- Favicon-->
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        
+    </head>
+    <body>
+        <!-- Product section-->
+        <section class="py-0">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="row gx-4 gx-lg-5 align-items-center">
+                    <div class="col-md-6">
+                        <div class="cardfoto" id="cardFoto">
+                            <img id="humanImageUrl" class="card-img-top mb-6 mb-md-0" src="https://airecomed.com/recursos/foto.png" alt="..." />
+                            <input type="file" id="fileInput" style="display: none;" accept="image/*" />
+                            <!-- Contenedor de carga -->
+                            <div class="loading" id="loadingOverlay">
+                                <div class="spinner"></div>
+                            </div>
+                            <!-- Botones en la parte inferior -->
+                            <div class="button-container" style="display: none;">
+                                <button class="bottom-button" id="instagramButton">Instagram</button>
+                                <button class="bottom-button2" id="facebookButton">Facebook</button>
+                                <button class="bottom-button3" id="downloadButton">Descargar</button>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- Carrusel personalizado para móviles -->
+                        <div id="customCarousel" class="carousel slide d-md-none" data-bs-ride="carousel">
+                            <div class="carousel-inner" id="carouselImagesContainer">
+
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#customCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#customCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+
+
+                        <!-- Grid para pantallas grandes -->
+                        <div class="col-md-6 d-none d-md-block">
+                            <div id="clothingContainer" class="row">
+                            </div>
+                        </div>
+
+                    
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <!-- <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; wocca 2025</p></div>
+        </footer> -->
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+          
+        <script>
+
+        document.getElementById('instagramButton').addEventListener('click', function() {
+            alert('Aun no disponible');
+        });
+
+        document.getElementById('facebookButton').addEventListener('click', function() {
+            const imageUrl = document.getElementById('humanImageUrl').src;
+            const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(imageUrl)}`;
+            window.open(facebookShareUrl, '_blank');
+        });
+
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            const imageUrl = document.getElementById('humanImageUrl').src;
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = 'imagen.png';
+            link.click();
+        });
+
+
+
+            
+            function guardarRutaImagen(ruta,rutaImagen) {
+                Swal.fire({
+                title: "¿Lo tienes claro?",
+                text: "Confirma tu decisión antes de proceder.",
+                imageUrl: ruta,
+                imageWidth: 270,
+                imageHeight: 300,
+                imageAlt: "Custom image",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "¡Confirmado!",
+                cancelButtonText: "Quiero otro."
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    let rutaImagen = document.getElementById('humanImageUrl');
+
+                    // Verificar si el elemento existe y obtener su ruta
+                    if (rutaImagen) {
+                        rutaImagen = rutaImagen.src; // Asignar la ruta de la imagen a la variable
+                    } else {
+                        console.error("Elemento de imagen no encontrado");
+                    }
+                    console.log("Ruta de la imagen seleccionada: " + rutaImagen);
+                    console.log("Ruta de la imagen prenda: " + ruta);
+                // Aquí puedes usar la variable 'rutaImagen' para otras acciones
+                            // Función para guardar la ruta de la imagen
+                    enviarImagenes(ruta,rutaImagen);
+                }
+                });
+                
+            }
+
+            function enviarImagenes(ruta,rutaImagen) {
+                const formData = new FormData();
+                formData.append('human_img', rutaImagen);
+                formData.append('garm_img', ruta);
+                console.log(formData);
+                fetch('/generate-image', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.imageUrl) {
+                        console.log("Imagen generada: ", data.imageUrl);
+                        const imagen = document.getElementById('humanImageUrl');
+                        // Limpiamos el src
+
+                        // Asignamos una nueva ruta al src
+                        imagen.src = data.imageUrl;
+                        // Mostrar los botones después de cargar la imagen
+                        document.querySelector('.button-container').style.display = 'flex';
+                    } else {
+                        alert('Error al generar la imagen');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                });
+        }
+
+
+            
+        </script>
+            <script type="module">
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+                import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js";
+                import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-storage.js";
+        
+                // Configuración de Firebase
+                const firebaseConfig = {
+                    apiKey: "AIzaSyAaMNIc8A7u22E4k5mMnI9hn-0SH6GgY78",
+                    authDomain: "togs-cc569.firebaseapp.com",
+                    projectId: "togs-cc569",
+                    storageBucket: "togs-cc569.appspot.com",
+                    messagingSenderId: "721742431560",
+                    appId: "1:721742431560:web:fd5b98af6b107e73e45f7d",
+                    measurementId: "G-BMSNFFXFJ8"
+                };
+        
+                // Inicializa Firebase con la configuración
+                const app = initializeApp(firebaseConfig);
+                const database = getDatabase(app);
+                const storage = getStorage(app); // Inicializa Firebase Storage
+        
+                const cardFoto = document.getElementById('cardFoto');
+                const humanImageUrl = document.getElementById('humanImageUrl');
+                const fileInput = document.getElementById('fileInput');
+                const loadingOverlay = document.getElementById('loadingOverlay'); // Elemento de carga
+        
+                // Función para abrir el selector de archivos al hacer clic en la imagen
+                humanImageUrl.addEventListener('click', () => {
+                    fileInput.click(); // Simula el clic en el input
+                });
+        
+                // Función para manejar la carga de la imagen al seleccionar un archivo
+                fileInput.addEventListener('change', async (event) => {
+                    const file = event.target.files[0]; // Obtener el archivo seleccionado
+        
+                    if (file) {
+                        loadingOverlay.style.display = 'flex'; // Mostrar la animación de carga
+                        // Subir la imagen a Firebase
+                        const imageUrl = await uploadImageToFirebase(file);
+                        
+                        if (imageUrl) {
+                            // Actualiza la fuente de la imagen en el DOM
+                            humanImageUrl.src = imageUrl;
+                            loadingOverlay.style.display = 'none'; // Ocultar la animación de carga
+                        } else {
+                            alert('Error al cargar la imagen en Firebase');
+                        }
+                    }
+                });
+        
+                // Función para cargar la imagen a Firebase y devolver la URL
+                async function uploadImageToFirebase(file) {
+                    const fileStorageRef = storageRef(storage, `images/${file.name}`); // Cambia la ruta según tus necesidades
+        
+                    try {
+                        await uploadBytes(fileStorageRef, file); // Carga el archivo
+                        const downloadURL = await getDownloadURL(fileStorageRef); // Obtiene la URL de descarga
+                        return downloadURL; // Devuelve la URL
+                    } catch (error) {
+                        console.error('Error al subir la imagen:', error);
+                        return null; // Retorna null si hay un error
+                    }
+                }
+        
+                // Función para recuperar y mostrar los datos
+                function loadImages() {
+                    // Obtener el valor del parámetro 'closet' desde la URL
+                    const params = new URLSearchParams(window.location.search);
+                    const closetUid = params.get('closet');
+        
+                    // Referencia a los datos de la ropa en la base de datos
+                    const clothingRef = ref(database, 'clothingItems');
+        
+                    // Escuchar los datos de Firebase en tiempo real
+                    onValue(clothingRef, (snapshot) => {
+                        const clothingItems = snapshot.val();
+                        const clothingContainer = document.getElementById('clothingContainer');
+                        const carouselContainer = document.getElementById('carouselImagesContainer');
+                        clothingContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar las imágenes
+                        carouselContainer.innerHTML = ''; // Limpiar el carrusel antes de agregar los slides
+        
+                        const itemsPerSlide = 4; // Número de elementos por slide en el carrusel
+                        let slideIndex = 0; // Para controlar el índice del slide
+                        let slideDiv; // Variable para almacenar el div del slide
+        
+                        // Iterar sobre los elementos de ropa
+                        let itemCounter = 0; // Contador de elementos para agruparlos en slides
+                        for (const key in clothingItems) {
+                            if (clothingItems.hasOwnProperty(key)) {
+                                const item = clothingItems[key];
+        
+                                // Mostrar solo los elementos donde el 'uid' coincida con el parámetro 'closet'
+                                if (item.uid === closetUid) {
+                                    const imageUrl = item.image;
+                                    const name = item.name;
+        
+                                    // --- Mostrar las imágenes en el contenedor normal ---
+                                    const itemDiv = document.createElement('div');
+                                    itemDiv.className = 'col-4 p-1';
+        
+                                    // Crear el contenedor de la tarjeta
+                                    const cardDiv = document.createElement('div');
+                                    cardDiv.className = 'cardpro';
+        
+                                    // Crear el elemento de la imagen
+                                    const imgElement = document.createElement('img');
+                                    imgElement.src = imageUrl;
+                                    imgElement.className = 'img-fluid clickable-image';
+                                    imgElement.alt = name;
+        
+                                    // Agregar evento 'click' a cada imagen
+                                    imgElement.addEventListener('click', function() {
+                                        // Llamar a la función pasando la ruta de la imagen
+                                        guardarRutaImagen(imgElement.src);
+                                    });
+        
+                                    // Agregar la imagen al contenedor de la tarjeta
+                                    cardDiv.appendChild(imgElement);
+                                    // Agregar el contenedor de la tarjeta al div principal
+                                    itemDiv.appendChild(cardDiv);
+                                    // Agregar el div de la prenda al contenedor principal
+                                    clothingContainer.appendChild(itemDiv);
+        
+                                    // --- Mostrar las imágenes en el carrusel ---
+                                    if (itemCounter % itemsPerSlide === 0) {
+                                        // Crear un nuevo slide cuando el contador es múltiplo de 4
+                                        slideDiv = document.createElement('div');
+                                        slideDiv.classList.add('carousel-item');
+                                        if (slideIndex === 0) {
+                                            slideDiv.classList.add('active'); // Hacer que el primer slide sea activo
+                                        }
+                                        const rowDiv = document.createElement('div');
+                                        rowDiv.className = 'row';
+                                        slideDiv.appendChild(rowDiv);
+                                        carouselContainer.appendChild(slideDiv);
+                                        slideIndex++;
+                                    }
+        
+                                    // Crear el div de la prenda dentro del slide
+                                    const carouselItemDiv = document.createElement('div');
+                                    carouselItemDiv.className = 'col-3'; // Ajusta el tamaño de la columna
+        
+                                    const carouselCardDiv = document.createElement('div');
+                                    carouselCardDiv.className = 'cardpro';
+        
+                                    const carouselImgElement = document.createElement('img');
+                                    carouselImgElement.src = imageUrl;
+                                    carouselImgElement.className = 'img-fluid clickable-image';
+                                    carouselImgElement.alt = name;
+        
+                                    // Agregar evento 'click' a la imagen del carrusel
+                                    carouselImgElement.addEventListener('click', function() {
+                                        guardarRutaImagen(carouselImgElement.src);
+                                    });
+        
+                                    carouselCardDiv.appendChild(carouselImgElement);
+                                    carouselItemDiv.appendChild(carouselCardDiv);
+                                    slideDiv.querySelector('.row').appendChild(carouselItemDiv);
+        
+                                    itemCounter++;
+                                }
+                            }
+                        }
+                    });
+                }
+        
+                // Ejecutar la función cuando la página se carga
+                window.onload = loadImages;
+        
+            </script>
+    </body>
+</html>
