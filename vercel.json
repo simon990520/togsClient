@@ -1,7 +1,5 @@
 {
-    "rewrites": [
-      { "source": "/login", "destination": "/public/login.html" },
-      { "source": "/dashboard", "destination": "/public/dashboard.html" }
-    ]
-  }
-  
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
