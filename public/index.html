@@ -134,7 +134,7 @@
                 formData.append('human_img', rutaImagen);
                 formData.append('garm_img', ruta);
                 console.log(formData);
-                fetch('/generate-image', {
+                fetch('api/generate-image', {
                     method: 'POST',
                     body: formData
                 })

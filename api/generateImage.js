@@ -6,6 +6,7 @@ import fetch from 'node-fetch';
 import multer from 'multer'; // Importar multer
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import 'dotenv/config';
 
 const router = express.Router();
 
@@ -16,15 +17,16 @@ const __dirname = dirname(__filename);
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_KEY // Asegúrate de tener la clave API en .env
 });
+console.log(process.env.REPLICATE_API_KEY);
 
 // Configurar multer para almacenar archivos subidos
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// Crear la carpeta 'imagenes' si no existe
-const imagesDir = path.join(__dirname, '../imagenes');
+// Crear la carpeta 'public/imagenes' si no existe
+const imagesDir = path.join(__dirname, '../public/imagenes'); // Cambiar a public/imagenes
 if (!fs.existsSync(imagesDir)) {
-  fs.mkdirSync(imagesDir);
+  fs.mkdirSync(imagesDir, { recursive: true }); // Asegúrate de crear cualquier subdirectorio necesario
 }
 
 // Función para formatear la fecha y hora
@@ -72,7 +74,7 @@ async function runModel(humanImgBuffer, garmImgBuffer) {
 
     const timestamp = getFormattedDate();
     const fileName = `output-image_${timestamp}.png`;
-    const filePath = path.join(imagesDir, fileName); // Guardar en la carpeta 'imagenes'
+    const filePath = path.join(imagesDir, fileName); // Guardar en la carpeta 'public/imagenes'
 
     fs.writeFileSync(filePath, imageBuffer);
     console.log(`Imagen guardada como ${filePath}`);
@@ -122,6 +124,6 @@ async function descargarImagen(url) {
 }
 
 // Sirve las imágenes generadas
-router.use('/imagenes', express.static(imagesDir)); // Sirve la carpeta 'imagenes'
+router.use('/imagenes', express.static(imagesDir)); // Sirve la carpeta 'public/imagenes'
 
 export default router;
