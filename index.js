@@ -130,15 +130,15 @@ async function descargarImagen(url) {
 app.use(express.static(path.join(__dirname, 'public')));
 // Ruta para servir el HTML
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html')); // Sirve el archivo index.html
+  res.sendFile(path.join(__dirname, 'public','index.html')); // Sirve el archivo index.html
 });
 // Ruta para servir el HTML
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html')); // Sirve el archivo index.html
+  res.sendFile(path.join(__dirname, 'public','login.html')); // Sirve el archivo index.html
 });
 // Ruta para servir el HTML
 app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dashboard.html')); // Sirve el archivo index.html
+  res.sendFile(path.join(__dirname, 'public','dashboard.html')); // Sirve el archivo index.html
 });
 
 // Sirve las imágenes generadas
