@@ -1,0 +1,1164 @@
+<!doctype html>
+<!--
+* Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
+* @version 1.0.0-beta20
+* @link https://tabler.io
+* Copyright 2018-2023 The Tabler Authors
+* Copyright 2018-2023 codecalm.net Paweł Kuna
+* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Togs</title>
+    <!-- CSS files -->
+    <link href="./dist/css/tabler.min.css?1692870487" rel="stylesheet"/>
+    <link href="./dist/css/tabler-flags.min.css?1692870487" rel="stylesheet"/>
+    <link href="./dist/css/tabler-payments.min.css?1692870487" rel="stylesheet"/>
+    <link href="./dist/css/tabler-vendors.min.css?1692870487" rel="stylesheet"/>
+    <link href="./dist/css/demo.min.css?1692870487" rel="stylesheet"/>
+    <link rel="icon" href="./dist/img/togs.png" type="image/png">
+    <style>
+      /* Estilos para el contenedor de la tarjeta */
+      .card {
+          position: relative; /* Hacer que el contenedor sea relativo para posicionar el botón */
+          overflow: hidden; /* Ocultar el contenido que sale de los bordes */
+      }
+      
+      /* Estilos para el botón de eliminación */
+      .delete-btn {
+          position: absolute;
+          top: 50%; /* Centrar verticalmente */
+          right: -100px; /* Comenzar fuera de la tarjeta */
+          transform: translateY(-50%); /* Centrar verticalmente */
+          width: 40%; /* Ocupa el 40% de la tarjeta */
+          background-color: #dc3545; /* Color de fondo para el botón */
+          color: white; /* Color del texto */
+          border: none; /* Sin borde */
+          padding: 0.5rem; /* Espaciado interno */
+          cursor: pointer; /* Cursor de puntero al pasar por encima */
+          transition: right 0.3s ease; /* Transición suave para el desplazamiento del botón */
+      }
+      
+      /* Mostrar el botón al pasar el mouse sobre la tarjeta */
+      .card:hover .delete-btn {
+          right: 0; /* Mover el botón a la vista */
+      }
+  </style>
+    <style>
+      @import url('https://rsms.me/inter/inter.css');
+      :root {
+      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+      body {
+      	font-feature-settings: "cv03", "cv04", "cv11";
+      }
+    </style>
+    <style>
+      /* Estilo para el input de tipo file */
+      .file-input {
+          padding: 10px;
+          border: 2px solid #0054a6; /* Borde azul */
+          border-radius: 5px; /* Bordes redondeados */
+          font-size: 16px; /* Tamaño de fuente */
+          transition: border-color 0.3s; /* Transición suave para el borde */
+      }
+  
+      .file-input:focus {
+          border-color: #0054a6; /* Borde más oscuro al hacer foco */
+          outline: none; /* Eliminar el contorno predeterminado */
+      }
+  
+      .file-input::-webkit-file-upload-button {
+          background: #0054a6; /* Color de fondo del botón */
+          color: white; /* Color del texto del botón */
+          border: none; /* Sin borde */
+          border-radius: 5px; /* Bordes redondeados */
+          padding: 10px 15px; /* Relleno del botón */
+          cursor: pointer; /* Cambiar el cursor al pasar el mouse */
+          font-size: 16px; /* Tamaño de fuente del botón */
+          transition: background 0.3s; /* Transición suave para el fondo */
+      }
+  
+      .file-input::-webkit-file-upload-button:hover {
+          background: #0054a6; /* Color de fondo al pasar el mouse */
+      }
+  
+      #imagePreview img {
+          max-width: 100%; /* Asegura que la imagen no exceda el ancho del contenedor */
+          border: 1px solid #ccc; /* Borde opcional a la imagen */
+          margin-top: 10px; /* Margen superior opcional */
+      }
+  </style>
+
+  </head>
+  <body >
+    <script src="./dist/js/demo-theme.min.js?1692870487"></script>
+    <div class="page">
+      <!-- Navbar -->
+      <header class="navbar navbar-expand-md d-print-none" >
+        <div class="container-xl">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+            <a  id="logoutButton" class="btn" rel="noreferrer">
+              <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
+              Cerrar sesion
+            </a>
+            <a href="." class="btn" rel="noreferrer">
+              <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+              Conectar
+            </a>
+          </h1>
+          <div class="navbar-nav flex-row order-md-last">
+            <div class="nav-item d-none d-md-flex me-3">
+              <div class="btn-list">
+                
+              </div>
+            </div>
+            <div class="d-none d-md-flex">
+              <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
+		   data-bs-placement="bottom">
+                <!-- Download SVG icon from http://tabler-icons.io/i/moon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
+              </a>
+              <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
+		   data-bs-placement="bottom">
+                <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
+              </a>
+              <div class="nav-item dropdown d-none d-md-flex me-3">
+                <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
+                  <span class="badge bg-red"></span>
+                </a>
+              </div>
+            </div>
+            <div class="nav-item dropdown">
+              <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+                <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                <div class="d-none d-xl-block ps-2">
+                  <div></div>
+                  <div class="mt-1 small text-secondary"></div>
+                </div>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <a href="#" class="dropdown-item">Status</a>
+                <a href="./profile.html" class="dropdown-item">Profile</a>
+                <a href="#" class="dropdown-item">Feedback</a>
+                <div class="dropdown-divider"></div>
+                <a href="./settings.html" class="dropdown-item">Settings</a>
+                <a id="logoutButton" class="dropdown-item">Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="page-wrapper">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+          <div class="container-xl">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                  Welcome
+                </div>
+                <h2 class="page-title">
+                  Dashboard
+                </h2>
+              </div>
+              <!-- Page title actions -->
+              <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                  <span class="d-none d-sm-inline">
+                    <a href="#" class="btn">
+                      Copiar link para compartir
+                    </a>
+                  </span>
+                  <a href="#" class="btn btn-warning d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    cargar nueva prenda
+                  </a>
+                  <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Page body -->
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="row row-deck row-cards">
+              <div class="col-12">
+                <div class="row row-cards">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="footer footer-transparent d-print-none">
+          <div class="container-xl">
+            <div class="row text-center align-items-center flex-row-reverse">
+              <div class="col-lg-auto ms-lg-auto">
+                <ul class="list-inline list-inline-dots mb-0">
+                  <li class="list-inline-item"><a href="#" target="_blank" class="link-secondary" rel="noopener">Documentation</a></li>
+                  <li class="list-inline-item"><a href="#" class="link-secondary">License</a></li>
+                  <li class="list-inline-item"><a href="#" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>
+                  <li class="list-inline-item">
+                    <a href="#" target="_blank" class="link-secondary" rel="noopener">
+                      <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink icon-filled icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                      Sponsor
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                <ul class="list-inline list-inline-dots mb-0">
+                  <li class="list-inline-item">
+                    Copyright &copy; 2024
+                    <a href="." class="link-secondary">togs</a>.
+                    All rights reserved.
+                  </li>
+                  <li class="list-inline-item">
+                    <a href="#" class="link-secondary" rel="noopener">
+                      v1.0.0-beta20
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Nueva prenda</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control" name="example-text-input" placeholder="Nombre de la prenda">
+            </div>
+            <label class="form-label">Tipo de prenda</label>
+            <div class="form-selectgroup-boxes row mb-3">
+              <div class="col-lg-6">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked>
+                  <span class="form-selectgroup-label d-flex align-items-center p-3">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1">Superior</span>
+                      <span class="d-block text-secondary">Camisa | Blusa | T-Shirt | Sudadera | Chaqueta | Abrigo | Camiseta de manga larga | Camiseta sin mangas | Polo | Jersey | Cárdigan | Túnica | Top | Chaleco | Saco | Bikini (parte superior) | Bodysuit | Kimono | Sweater | Regata</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+              <div class="col-lg-6">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="report-type" value="1" class="form-selectgroup-input">
+                  <span class="form-selectgroup-label d-flex align-items-center p-3">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1">Inferior</span>
+                      <span class="d-block text-secondary">Pantalones | Jeans | Leggings | Pantalones cortos (shorts) | Chinos | Joggers | Falda larga | Falda corta | Pantalones de pijama | Monos | Overoles | Culottes | Capri | Pantalones anchos | Pantalones de cuero | Pantalones cargo | Skorts</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-12">
+                  <div>
+                      <label class="form-label">Cargar imagen</label>
+                      <input type="file" class="form-control file-input" accept="image/*" onchange="previewImage(event)">
+                  </div>
+                  <div id="imagePreview" style="margin-top: 10px;">
+                      <!-- Aquí se mostrará la imagen cargada -->
+                  </div>
+              </div>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </a>
+            <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal" onclick="createNewItem()">
+              <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+              Create nueva prenda
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Libs JS -->
+    <script src="./dist/libs/apexcharts/dist/apexcharts.min.js?1692870487" defer></script>
+    <script src="./dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1692870487" defer></script>
+    <script src="./dist/libs/jsvectormap/dist/maps/world.js?1692870487" defer></script>
+    <script src="./dist/libs/jsvectormap/dist/maps/world-merc.js?1692870487" defer></script>
+    <!-- Tabler Core -->
+    <script src="./dist/js/tabler.min.js?1692870487" defer></script>
+    <script src="./dist/js/demo.min.js?1692870487" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- <script type="module" src="dashboard.js"></script> -->
+    <script>
+      function previewImage(event) {
+          const imagePreview = document.getElementById('imagePreview');
+          imagePreview.innerHTML = ''; // Limpiar el contenido anterior
+  
+          const file = event.target.files[0];
+          if (file) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                  const img = document.createElement('img');
+                  img.src = e.target.result;
+                  img.alt = 'Imagen cargada';
+                  imagePreview.appendChild(img);
+              };
+              reader.readAsDataURL(file); // Leer la imagen como URL de datos
+          }
+      }
+  </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-revenue-bg'), {
+      		chart: {
+      			type: "area",
+      			fontFamily: 'inherit',
+      			height: 40.0,
+      			sparkline: {
+      				enabled: true
+      			},
+      			animations: {
+      				enabled: false
+      			},
+      		},
+      		dataLabels: {
+      			enabled: false,
+      		},
+      		fill: {
+      			opacity: .16,
+      			type: 'solid'
+      		},
+      		stroke: {
+      			width: 2,
+      			lineCap: "round",
+      			curve: "smooth",
+      		},
+      		series: [{
+      			name: "Profits",
+      			data: [37, 35, 44, 28, 36, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46, 39, 62, 51, 35, 41, 67]
+      		}],
+      		tooltip: {
+      			theme: 'dark'
+      		},
+      		grid: {
+      			strokeDashArray: 4,
+      		},
+      		xaxis: {
+      			labels: {
+      				padding: 0,
+      			},
+      			tooltip: {
+      				enabled: false
+      			},
+      			axisBorder: {
+      				show: false,
+      			},
+      			type: 'datetime',
+      		},
+      		yaxis: {
+      			labels: {
+      				padding: 4
+      			},
+      		},
+      		labels: [
+      			'2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19'
+      		],
+      		colors: [tabler.getColor("primary")],
+      		legend: {
+      			show: false,
+      		},
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-new-clients'), {
+      		chart: {
+      			type: "line",
+      			fontFamily: 'inherit',
+      			height: 40.0,
+      			sparkline: {
+      				enabled: true
+      			},
+      			animations: {
+      				enabled: false
+      			},
+      		},
+      		fill: {
+      			opacity: 1,
+      		},
+      		stroke: {
+      			width: [2, 1],
+      			dashArray: [0, 3],
+      			lineCap: "round",
+      			curve: "smooth",
+      		},
+      		series: [{
+      			name: "May",
+      			data: [37, 35, 44, 28, 36, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 4, 46, 39, 62, 51, 35, 41, 67]
+      		},{
+      			name: "April",
+      			data: [93, 54, 51, 24, 35, 35, 31, 67, 19, 43, 28, 36, 62, 61, 27, 39, 35, 41, 27, 35, 51, 46, 62, 37, 44, 53, 41, 65, 39, 37]
+      		}],
+      		tooltip: {
+      			theme: 'dark'
+      		},
+      		grid: {
+      			strokeDashArray: 4,
+      		},
+      		xaxis: {
+      			labels: {
+      				padding: 0,
+      			},
+      			tooltip: {
+      				enabled: false
+      			},
+      			type: 'datetime',
+      		},
+      		yaxis: {
+      			labels: {
+      				padding: 4
+      			},
+      		},
+      		labels: [
+      			'2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19'
+      		],
+      		colors: [tabler.getColor("primary"), tabler.getColor("gray-600")],
+      		legend: {
+      			show: false,
+      		},
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-active-users'), {
+      		chart: {
+      			type: "bar",
+      			fontFamily: 'inherit',
+      			height: 40.0,
+      			sparkline: {
+      				enabled: true
+      			},
+      			animations: {
+      				enabled: false
+      			},
+      		},
+      		plotOptions: {
+      			bar: {
+      				columnWidth: '50%',
+      			}
+      		},
+      		dataLabels: {
+      			enabled: false,
+      		},
+      		fill: {
+      			opacity: 1,
+      		},
+      		series: [{
+      			name: "Profits",
+      			data: [37, 35, 44, 28, 36, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46, 39, 62, 51, 35, 41, 67]
+      		}],
+      		tooltip: {
+      			theme: 'dark'
+      		},
+      		grid: {
+      			strokeDashArray: 4,
+      		},
+      		xaxis: {
+      			labels: {
+      				padding: 0,
+      			},
+      			tooltip: {
+      				enabled: false
+      			},
+      			axisBorder: {
+      				show: false,
+      			},
+      			type: 'datetime',
+      		},
+      		yaxis: {
+      			labels: {
+      				padding: 4
+      			},
+      		},
+      		labels: [
+      			'2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19'
+      		],
+      		colors: [tabler.getColor("primary")],
+      		legend: {
+      			show: false,
+      		},
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-mentions'), {
+      		chart: {
+      			type: "bar",
+      			fontFamily: 'inherit',
+      			height: 240,
+      			parentHeightOffset: 0,
+      			toolbar: {
+      				show: false,
+      			},
+      			animations: {
+      				enabled: false
+      			},
+      			stacked: true,
+      		},
+      		plotOptions: {
+      			bar: {
+      				columnWidth: '50%',
+      			}
+      		},
+      		dataLabels: {
+      			enabled: false,
+      		},
+      		fill: {
+      			opacity: 1,
+      		},
+      		series: [{
+      			name: "Web",
+      			data: [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 2, 12, 5, 8, 22, 6, 8, 6, 4, 1, 8, 24, 29, 51, 40, 47, 23, 26, 50, 26, 41, 22, 46, 47, 81, 46, 6]
+      		},{
+      			name: "Social",
+      			data: [2, 5, 4, 3, 3, 1, 4, 7, 5, 1, 2, 5, 3, 2, 6, 7, 7, 1, 5, 5, 2, 12, 4, 6, 18, 3, 5, 2, 13, 15, 20, 47, 18, 15, 11, 10, 0]
+      		},{
+      			name: "Other",
+      			data: [2, 9, 1, 7, 8, 3, 6, 5, 5, 4, 6, 4, 1, 9, 3, 6, 7, 5, 2, 8, 4, 9, 1, 2, 6, 7, 5, 1, 8, 3, 2, 3, 4, 9, 7, 1, 6]
+      		}],
+      		tooltip: {
+      			theme: 'dark'
+      		},
+      		grid: {
+      			padding: {
+      				top: -20,
+      				right: 0,
+      				left: -4,
+      				bottom: -4
+      			},
+      			strokeDashArray: 4,
+      			xaxis: {
+      				lines: {
+      					show: true
+      				}
+      			},
+      		},
+      		xaxis: {
+      			labels: {
+      				padding: 0,
+      			},
+      			tooltip: {
+      				enabled: false
+      			},
+      			axisBorder: {
+      				show: false,
+      			},
+      			type: 'datetime',
+      		},
+      		yaxis: {
+      			labels: {
+      				padding: 4
+      			},
+      		},
+      		labels: [
+      			'2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19', '2020-07-20', '2020-07-21', '2020-07-22', '2020-07-23', '2020-07-24', '2020-07-25', '2020-07-26'
+      		],
+      		colors: [tabler.getColor("primary"), tabler.getColor("primary", 0.8), tabler.getColor("green", 0.8)],
+      		legend: {
+      			show: false,
+      		},
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:on
+      document.addEventListener("DOMContentLoaded", function() {
+      	const map = new jsVectorMap({
+      		selector: '#map-world',
+      		map: 'world',
+      		backgroundColor: 'transparent',
+      		regionStyle: {
+      			initial: {
+      				fill: tabler.getColor('body-bg'),
+      				stroke: tabler.getColor('border-color'),
+      				strokeWidth: 2,
+      			}
+      		},
+      		zoomOnScroll: false,
+      		zoomButtons: false,
+      		// -------- Series --------
+      		visualizeData: {
+      			scale: [tabler.getColor('bg-surface'), tabler.getColor('primary')],
+      			values: { "AF": 16, "AL": 11, "DZ": 158, "AO": 85, "AG": 1, "AR": 351, "AM": 8, "AU": 1219, "AT": 366, "AZ": 52, "BS": 7, "BH": 21, "BD": 105, "BB": 3, "BY": 52, "BE": 461, "BZ": 1, "BJ": 6, "BT": 1, "BO": 19, "BA": 16, "BW": 12, "BR": 2023, "BN": 11, "BG": 44, "BF": 8, "BI": 1, "KH": 11, "CM": 21, "CA": 1563, "CV": 1, "CF": 2, "TD": 7, "CL": 199, "CN": 5745, "CO": 283, "KM": 0, "CD": 12, "CG": 11, "CR": 35, "CI": 22, "HR": 59, "CY": 22, "CZ": 195, "DK": 304, "DJ": 1, "DM": 0, "DO": 50, "EC": 61, "EG": 216, "SV": 21, "GQ": 14, "ER": 2, "EE": 19, "ET": 30, "FJ": 3, "FI": 231, "FR": 2555, "GA": 12, "GM": 1, "GE": 11, "DE": 3305, "GH": 18, "GR": 305, "GD": 0, "GT": 40, "GN": 4, "GW": 0, "GY": 2, "HT": 6, "HN": 15, "HK": 226, "HU": 132, "IS": 12, "IN": 1430, "ID": 695, "IR": 337, "IQ": 84, "IE": 204, "IL": 201, "IT": 2036, "JM": 13, "JP": 5390, "JO": 27, "KZ": 129, "KE": 32, "KI": 0, "KR": 986, "KW": 117, "KG": 4, "LA": 6, "LV": 23, "LB": 39, "LS": 1, "LR": 0, "LY": 77, "LT": 35, "LU": 52, "MK": 9, "MG": 8, "MW": 5, "MY": 218, "MV": 1, "ML": 9, "MT": 7, "MR": 3, "MU": 9, "MX": 1004, "MD": 5, "MN": 5, "ME": 3, "MA": 91, "MZ": 10, "MM": 35, "NA": 11, "NP": 15, "NL": 770, "NZ": 138, "NI": 6, "NE": 5, "NG": 206, "NO": 413, "OM": 53, "PK": 174, "PA": 27, "PG": 8, "PY": 17, "PE": 153, "PH": 189, "PL": 438, "PT": 223, "QA": 126, "RO": 158, "RU": 1476, "RW": 5, "WS": 0, "ST": 0, "SA": 434, "SN": 12, "RS": 38, "SC": 0, "SL": 1, "SG": 217, "SK": 86, "SI": 46, "SB": 0, "ZA": 354, "ES": 1374, "LK": 48, "KN": 0, "LC": 1, "VC": 0, "SD": 65, "SR": 3, "SZ": 3, "SE": 444, "CH": 522, "SY": 59, "TW": 426, "TJ": 5, "TZ": 22, "TH": 312, "TL": 0, "TG": 3, "TO": 0, "TT": 21, "TN": 43, "TR": 729, "TM": 0, "UG": 17, "UA": 136, "AE": 239, "GB": 2258, "US": 4624, "UY": 40, "UZ": 37, "VU": 0, "VE": 285, "VN": 101, "YE": 30, "ZM": 15, "ZW": 5 },
+      		},
+      	});
+      	window.addEventListener("resize", () => {
+      		map.updateSize();
+      	});
+      });
+      // @formatter:off
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-activity'), {
+      		chart: {
+      			type: "radialBar",
+      			fontFamily: 'inherit',
+      			height: 40,
+      			width: 40,
+      			animations: {
+      				enabled: false
+      			},
+      			sparkline: {
+      				enabled: true
+      			},
+      		},
+      		tooltip: {
+      			enabled: false,
+      		},
+      		plotOptions: {
+      			radialBar: {
+      				hollow: {
+      					margin: 0,
+      					size: '75%'
+      				},
+      				track: {
+      					margin: 0
+      				},
+      				dataLabels: {
+      					show: false
+      				}
+      			}
+      		},
+      		colors: [tabler.getColor("blue")],
+      		series: [35],
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-development-activity'), {
+      		chart: {
+      			type: "area",
+      			fontFamily: 'inherit',
+      			height: 192,
+      			sparkline: {
+      				enabled: true
+      			},
+      			animations: {
+      				enabled: false
+      			},
+      		},
+      		dataLabels: {
+      			enabled: false,
+      		},
+      		fill: {
+      			opacity: .16,
+      			type: 'solid'
+      		},
+      		stroke: {
+      			width: 2,
+      			lineCap: "round",
+      			curve: "smooth",
+      		},
+      		series: [{
+      			name: "Purchases",
+      			data: [3, 5, 4, 6, 7, 5, 6, 8, 24, 7, 12, 5, 6, 3, 8, 4, 14, 30, 17, 19, 15, 14, 25, 32, 40, 55, 60, 48, 52, 70]
+      		}],
+      		tooltip: {
+      			theme: 'dark'
+      		},
+      		grid: {
+      			strokeDashArray: 4,
+      		},
+      		xaxis: {
+      			labels: {
+      				padding: 0,
+      			},
+      			tooltip: {
+      				enabled: false
+      			},
+      			axisBorder: {
+      				show: false,
+      			},
+      			type: 'datetime',
+      		},
+      		yaxis: {
+      			labels: {
+      				padding: 4
+      			},
+      		},
+      		labels: [
+      			'2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19'
+      		],
+      		colors: [tabler.getColor("primary")],
+      		legend: {
+      			show: false,
+      		},
+      		point: {
+      			show: false
+      		},
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-1'), {
+      		chart: {
+      			type: "line",
+      			fontFamily: 'inherit',
+      			height: 24,
+      			animations: {
+      				enabled: false
+      			},
+      			sparkline: {
+      				enabled: true
+      			},
+      		},
+      		tooltip: {
+      			enabled: false,
+      		},
+      		stroke: {
+      			width: 2,
+      			lineCap: "round",
+      		},
+      		series: [{
+      			color: tabler.getColor("primary"),
+      			data: [17, 24, 20, 10, 5, 1, 4, 18, 13]
+      		}],
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-2'), {
+      		chart: {
+      			type: "line",
+      			fontFamily: 'inherit',
+      			height: 24,
+      			animations: {
+      				enabled: false
+      			},
+      			sparkline: {
+      				enabled: true
+      			},
+      		},
+      		tooltip: {
+      			enabled: false,
+      		},
+      		stroke: {
+      			width: 2,
+      			lineCap: "round",
+      		},
+      		series: [{
+      			color: tabler.getColor("primary"),
+      			data: [13, 11, 19, 22, 12, 7, 14, 3, 21]
+      		}],
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-3'), {
+      		chart: {
+      			type: "line",
+      			fontFamily: 'inherit',
+      			height: 24,
+      			animations: {
+      				enabled: false
+      			},
+      			sparkline: {
+      				enabled: true
+      			},
+      		},
+      		tooltip: {
+      			enabled: false,
+      		},
+      		stroke: {
+      			width: 2,
+      			lineCap: "round",
+      		},
+      		series: [{
+      			color: tabler.getColor("primary"),
+      			data: [10, 13, 10, 4, 17, 3, 23, 22, 19]
+      		}],
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-4'), {
+      		chart: {
+      			type: "line",
+      			fontFamily: 'inherit',
+      			height: 24,
+      			animations: {
+      				enabled: false
+      			},
+      			sparkline: {
+      				enabled: true
+      			},
+      		},
+      		tooltip: {
+      			enabled: false,
+      		},
+      		stroke: {
+      			width: 2,
+      			lineCap: "round",
+      		},
+      		series: [{
+      			color: tabler.getColor("primary"),
+      			data: [6, 15, 13, 13, 5, 7, 17, 20, 19]
+      		}],
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-5'), {
+      		chart: {
+      			type: "line",
+      			fontFamily: 'inherit',
+      			height: 24,
+      			animations: {
+      				enabled: false
+      			},
+      			sparkline: {
+      				enabled: true
+      			},
+      		},
+      		tooltip: {
+      			enabled: false,
+      		},
+      		stroke: {
+      			width: 2,
+      			lineCap: "round",
+      		},
+      		series: [{
+      			color: tabler.getColor("primary"),
+      			data: [2, 11, 15, 14, 21, 20, 8, 23, 18, 14]
+      		}],
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-6'), {
+      		chart: {
+      			type: "line",
+      			fontFamily: 'inherit',
+      			height: 24,
+      			animations: {
+      				enabled: false
+      			},
+      			sparkline: {
+      				enabled: true
+      			},
+      		},
+      		tooltip: {
+      			enabled: false,
+      		},
+      		stroke: {
+      			width: 2,
+      			lineCap: "round",
+      		},
+      		series: [{
+      			color: tabler.getColor("primary"),
+      			data: [22, 12, 7, 14, 3, 21, 8, 23, 18, 14]
+      		}],
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <!-- Asegúrate de incluir Firebase y sus servicios al final del cuerpo -->
+<!-- Asegúrate de incluir Firebase y sus servicios al final del cuerpo -->
+<script type="module">
+// Importar Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+    import { getDatabase, ref, onValue, get, push, remove  } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js";
+    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-storage.js";
+
+    // Configuración de Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyAaMNIc8A7u22E4k5mMnI9hn-0SH6GgY78",
+        authDomain: "togs-cc569.firebaseapp.com",
+        projectId: "togs-cc569",
+        storageBucket: "togs-cc569.appspot.com",
+        messagingSenderId: "721742431560",
+        appId: "1:721742431560:web:fd5b98af6b107e73e45f7d",
+        measurementId: "G-BMSNFFXFJ8"
+    };
+
+    // Inicializa Firebase con la configuración
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const storage = getStorage(app);
+
+    async function createNewItem() {
+        const name = document.querySelector('input[name="example-text-input"]').value;
+        const type = document.querySelector('input[name="report-type"]:checked').nextElementSibling.querySelector('.form-selectgroup-title').innerText;
+        const imageInput = document.querySelector('.file-input');
+
+        // Obtener el UID del usuario del local storage
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user ? user.uid : null; // Asegúrate de que el UID esté presente
+
+        if (userId) {
+            // Referencia a los elementos de ropa del usuario
+            const userClothingRef = ref(database, 'clothingItems');
+            
+            // Consultar cuántos elementos existen para el usuario
+            const snapshot = await get(userClothingRef);
+            const clothingItems = snapshot.val();
+
+            // Contar cuántos elementos tiene el usuario
+            let itemCount = 0;
+            for (const key in clothingItems) {
+                if (clothingItems[key].uid === userId) {
+                    itemCount++;
+                }
+            }
+
+            // Verificar si el usuario ya tiene 9 elementos
+            if (itemCount >= 9) {
+                Swal.fire({
+                    title: "Límite alcanzado",
+                    text: "No puedes crear más de 9 prendas.",
+                    icon: "warning",
+                    confirmButtonColor: "#3085d6",
+                });
+                return; // Salir de la función si se alcanza el límite
+            }
+
+            // Subir la imagen si existe
+            if (imageInput.files[0]) {
+            const file = imageInput.files[0];
+
+            // Obtener la fecha y hora actuales
+            const now = new Date();
+            const timestamp = now.toISOString().replace(/[-:.]/g, ""); // Formato: YYYYMMDDHHmmss
+            const uniqueFileName = `${timestamp}_${file.name}`; // Crear un nombre de archivo único
+
+            const storageReference = storageRef(storage, `images/${uniqueFileName}`); // Crear una referencia en Firebase Storage con el nombre único
+
+            // Subir la imagen
+            try {
+                await uploadBytes(storageReference, file);
+                const downloadURL = await getDownloadURL(storageReference); // Obtener la URL de descarga
+
+                // Guardar en Firebase Realtime Database
+                await push(ref(database, 'clothingItems'), {
+                    name: name,
+                    type: type,
+                    image: downloadURL, // Guardar la URL de la imagen
+                    uid: userId // Guardar el UID del usuario
+                });
+
+                clearForm();
+                loadItems();
+
+            } catch (error) {
+                console.error('Error al subir la imagen o guardar la prenda:', error);
+            }
+        }
+        else {
+                // Guardar en Firebase sin imagen
+                Swal.fire({
+                    title: "Sin imagen?",
+                    text: "Falta fotografía de la prenda",
+                    confirmButtonColor: "#3085d6",
+                    icon: "question"
+                });
+
+                clearForm();
+            }
+        } else {
+            console.error('No se pudo obtener el UID del usuario.');
+        }
+    }
+
+
+  function clearForm() {
+      document.querySelector('input[name="example-text-input"]').value = '';
+      document.querySelector('input[name="report-type"]:checked').checked = false; // Desmarcar radio buttons
+      document.querySelector('.file-input').value = ''; // Limpiar el input de archivo
+      document.getElementById('imagePreview').innerHTML = ''; // Limpiar vista previa de imagen
+  }
+
+  // Función para eliminar un elemento
+  window.deleteItem = async function(id, imageUrl) {
+    // Eliminar de Firebase Realtime Database
+    await remove(ref(database, `clothingItems/${id}`));
+
+    // Si hay una URL de imagen, eliminar de Firebase Storage
+    if (imageUrl) {
+        const imageRef = storageRef(storage, imageUrl);
+        await deleteObject(imageRef);
+    }
+
+    // Recargar los elementos
+    loadItems();
+};
+
+  // Función para recuperar y mostrar los datos
+  function loadItems() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user ? user.uid : null; // Obtener el UID del usuario
+
+    const itemsRef = ref(database, 'clothingItems'); // Referencia a los elementos en la base de datos
+    onValue(itemsRef, (snapshot) => {
+        const items = snapshot.val();
+        const rowCards = document.querySelector('.row-cards');
+        rowCards.innerHTML = ''; // Limpiar tarjetas existentes
+
+        // Iterar sobre los elementos y crear las tarjetas
+        for (const id in items) {
+            const item = items[id];
+
+            // Verificar si el UID del item coincide con el UID del usuario
+            if (item.uid === userId) {
+                const card = document.createElement('div');
+                card.className = 'col-sm-6 col-lg-3';
+                card.innerHTML = `
+                    <div class="card card-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span class="bg-primary text-white avatar">
+                                        <img src="${item.image || 'default_image_url.jpg'}" alt="${item.name}" class="img-avatar" />
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <div class="font-weight-medium">
+                                        ${item.name}
+                                    </div>
+                                    <div class="text-secondary">
+                                        ${item.type}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteItem('${id}', '${item.image}')">Eliminar</button>
+                    </div>
+                `;
+                rowCards.appendChild(card); // Añadir la tarjeta a la fila
+            }
+        }
+    });
+}
+
+
+  // Agregar el evento al botón "Crear nueva prenda"
+  document.querySelector('.btn-primary.ms-auto').addEventListener('click', function(e) {
+      e.preventDefault(); // Evitar que el botón intente enviar un formulario
+      createNewItem(); // Llamar a la función para crear una nueva prenda
+  });
+
+  // Llamar a la función al cargar la página
+  
+  // Obtener los datos del usuario del localStorage
+const user = JSON.parse(localStorage.getItem('user'));
+
+if (user) {
+    // Seleccionar el componente donde se mostrarán los datos
+    const avatar = document.querySelector('.avatar');
+    const nameElement = document.querySelector('.d-none.d-xl-block > div:first-child');
+    const emailElement = document.createElement('div');
+    emailElement.classList.add('mt-1', 'small', 'text-secondary');
+
+    // Establecer la foto, el nombre y el correo
+    if (user.photoURL) {
+        avatar.style.backgroundImage = `url(${user.photoURL})`; // Establecer la imagen de fondo
+    }
+
+    nameElement.textContent = user.displayName || 'Nombre no disponible'; // Establecer el nombre
+
+    emailElement.textContent = user.email || 'Correo no disponible'; // Establecer el correo
+    document.querySelector('.d-none.d-xl-block').appendChild(emailElement); // Agregar el elemento de correo al DOM
+}
+
+// Función para eliminar el usuario del localStorage
+function logoutUser() {
+    localStorage.removeItem('user'); // Eliminar el 'user' de localStorage
+    // Redirigir a la ruta "dashboard"
+    window.location.href = 'login'; // Asegúrate de que esta ruta sea correcta
+}
+
+// Agregar evento al botón de logout
+document.querySelector('#logoutButton').addEventListener('click', logoutUser);
+// Función para verificar si el usuario está autenticado
+function checkAuth() {
+    const user = localStorage.getItem('user'); // Obtener el usuario del localStorage
+    
+    if (!user) { // Si no hay usuario en el localStorage
+        window.location.href = 'login'; // Redirigir al usuario a la página de inicio
+    }
+}
+
+// Llamar a la función de verificación cuando la página cargue
+window.onload = checkAuth;
+window.onload = loadItems;
+</script>
+  </body>
+</html>

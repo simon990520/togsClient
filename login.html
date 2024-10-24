@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="icon" href="./dist/img/togs.png" type="image/png">
+</head>
+<body>
+    <input type="checkbox" id="switch">
+        <div class="app">
+        <div class="body">
+            <div class="main-circle"></div>
+            <div class="phone">
+            <!-- Top -->
+            <div class="menu">
+                <div class="time">4:20</div>
+                <div class="icons">
+                <div class="network"></div>
+                <div class="battery"></div>
+                </div>
+            </div>
+            <!-- Middle -->
+            <div class="content">
+                <div class="circle">
+                <img src="./dist/img/togs.png" alt="">
+                </div>
+                <p class="heading">Muestra tus prendas.</p>
+                <p>Conéctate, comparte y deja que tu<br>
+                    moda hable por sí misma.
+                </p>
+                <label id="loginBtn" for="switch">
+                <div class="toggle"></div>
+                <div class="names">
+                    <p class="light">Google</p>
+                    <p class="dark">Conectar</p>
+                </div>
+                </label>
+                
+                <div class="mark"></div>
+            </div>
+            <!-- Bottom --> 
+            <div class="skip">
+                <p>Terminos y condiciones</p>
+                <div class="fab">
+                <div class="arrow"></div>
+                </div>
+            </div>
+            
+            <div class="swipe"></div>
+            </div>
+        </div>
+        </div>
+        <script>
+            // Función para verificar si el usuario ya está autenticado
+            function redirectToDashboardIfLoggedIn() {
+                const user = localStorage.getItem('user'); // Obtener el usuario del localStorage
+                
+                if (user) { // Si el usuario está autenticado
+                    window.location.href = 'dashboard'; // Redirigir al usuario al dashboard
+                }
+            }
+
+            // Llamar a la función de verificación cuando la página cargue
+            window.onload = redirectToDashboardIfLoggedIn;
+        </script>
+        <script type="module" src="./js/login.js"></script>
+</body>
+</html>
