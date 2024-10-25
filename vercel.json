@@ -11,6 +11,6 @@
     { "src": "/login", "dest": "/login.html" },
     { "src": "/dashboard", "dest": "/dashboard.html" },
     { "src": "/", "dest": "/" },
-    { "src": "/(.*)", "dest": "/$1" }  // Maneja todas las demás rutas
+    { "src": "/(.*)", "dest": "/$1" }  
   ]
 }
