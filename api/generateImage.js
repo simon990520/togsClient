@@ -5,6 +5,7 @@ import fetch from 'node-fetch';
 import multer from 'multer'; // Importar multer
 import Replicate from 'replicate';
 import 'dotenv/config';
+import Cors from 'cors'; // Importar cors
 
 // Inicialización de la API de Replicate
 const replicate = new Replicate({
@@ -20,6 +21,12 @@ const imagesDir = path.join(process.cwd(), 'public/imagenes'); // Cambiar a publ
 if (!fs.existsSync(imagesDir)) {
   fs.mkdirSync(imagesDir, { recursive: true }); // Asegúrate de crear cualquier subdirectorio necesario
 }
+
+// Configuración de CORS
+const cors = Cors({
+  methods: ['POST', 'OPTIONS'], // Métodos permitidos
+  origin: 'https://togs.vercel.app', // Cambia esto por tu dominio de producción o '*'
+});
 
 // Función para formatear la fecha y hora
 function getFormattedDate() {
@@ -90,38 +97,41 @@ async function descargarImagen(url) {
 
 // Manejador de la ruta para generar la imagen
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    // Configurar multer para procesar la solicitud
-    upload.fields([{ name: 'human_img' }, { name: 'garm_img' }])(req, res, async (err) => {
-      if (err) {
-        return res.status(400).json({ error: 'Error al procesar las imágenes' });
-      }
-
-      try {
-        // Verifica que se estén recibiendo las imágenes
-        const humanImageUrl = req.body.human_img || (req.files['human_img'] && req.files['human_img'][0].buffer);
-        const garmentImageUrl = req.body.garm_img || (req.files['garm_img'] && req.files['garm_img'][0].buffer);
-
-        if (!humanImageUrl || !garmentImageUrl) {
-          return res.status(400).send('Faltan imágenes en la solicitud.');
+  // Aplicar el middleware de CORS
+  cors(req, res, async () => {
+    if (req.method === 'POST') {
+      // Configurar multer para procesar la solicitud
+      upload.fields([{ name: 'human_img' }, { name: 'garm_img' }])(req, res, async (err) => {
+        if (err) {
+          return res.status(400).json({ error: 'Error al procesar las imágenes' });
         }
 
-        const humanImgBuffer = await descargarImagen(humanImageUrl);
-        const garmImgBuffer = await descargarImagen(garmentImageUrl);
+        try {
+          // Verifica que se estén recibiendo las imágenes
+          const humanImageUrl = req.body.human_img || (req.files['human_img'] && req.files['human_img'][0].buffer);
+          const garmentImageUrl = req.body.garm_img || (req.files['garm_img'] && req.files['garm_img'][0].buffer);
 
-        const fileName = await runModel(humanImgBuffer, garmImgBuffer);
-        if (fileName) {
-          res.json({ imageUrl: `https://togs.vercel.app/imagenes/${fileName}` }); // Cambiar localhost a la URL de Vercel
-        } else {
-          res.status(500).send('Error al generar la imagen');
+          if (!humanImageUrl || !garmentImageUrl) {
+            return res.status(400).send('Faltan imágenes en la solicitud.');
+          }
+
+          const humanImgBuffer = await descargarImagen(humanImageUrl);
+          const garmImgBuffer = await descargarImagen(garmentImageUrl);
+
+          const fileName = await runModel(humanImgBuffer, garmImgBuffer);
+          if (fileName) {
+            res.json({ imageUrl: `http://localhost:3000/imagenes/${fileName}` }); // Cambiar localhost a la URL de Vercel
+          } else {
+            res.status(500).send('Error al generar la imagen');
+          }
+        } catch (error) {
+          console.error("Error en la ruta /generate-image:", error);
+          res.status(500).send(`Error interno del servidor: ${error.message}`);
         }
-      } catch (error) {
-        console.error("Error en la ruta /generate-image:", error);
-        res.status(500).send(`Error interno del servidor: ${error.message}`);
-      }
-    });
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Método ${req.method} no permitido`);
-  }
+      });
+    } else {
+      res.setHeader('Allow', ['POST']);
+      res.status(405).end(`Método ${req.method} no permitido`);
+    }
+  });
 }
