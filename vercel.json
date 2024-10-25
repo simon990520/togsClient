@@ -6,14 +6,8 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
-    {
-      "src": "/api/generate-image",
-      "methods": ["POST"],
-      "dest": "/api/generate-image.js"
-    }
-  ],
   "rewrites": [
+    { "source": "/api/generate-image", "destination": "/api/generate-image.js" },
     { "source": "/login", "destination": "/login.html" },
     { "source": "/dashboard", "destination": "/dashboard.html" },
     { "source": "/(.*)", "destination": "/" }
