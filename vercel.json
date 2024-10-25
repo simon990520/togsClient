@@ -6,10 +6,11 @@
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
-    { "source": "/api/generate-image", "destination": "/api/generate-image.js" },
-    { "source": "/login", "destination": "/login.html" },
-    { "source": "/dashboard", "destination": "/dashboard.html" },
-    { "source": "/(.*)", "destination": "/" }
+  "routes": [
+    { "src": "/api/generate-image", "dest": "/api/generate-image.js" },
+    { "src": "/login", "dest": "/login.html" },
+    { "src": "/dashboard", "dest": "/dashboard.html" },
+    { "src": "/", "dest": "/" },
+    { "src": "/(.*)", "dest": "/$1" }  // Maneja todas las demás rutas
   ]
 }
