@@ -120,7 +120,7 @@ export default async function handler(req, res) {
 
           const fileName = await runModel(humanImgBuffer, garmImgBuffer);
           if (fileName) {
-            res.json({ imageUrl: `http://localhost:3000/imagenes/${fileName}` }); // Cambiar localhost a la URL de Vercel
+            res.json({ imageUrl: `https://togs-fru2.onrender.com/imagenes/${fileName}` }); // Cambiar localhost a la URL de Vercel
           } else {
             res.status(500).send('Error al generar la imagen');
           }
