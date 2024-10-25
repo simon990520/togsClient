@@ -1,4 +1,18 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/generate-image.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/generate-image",
+      "methods": ["POST"],
+      "dest": "/api/generate-image.js"
+    }
+  ],
   "rewrites": [
     { "source": "/login", "destination": "/login.html" },
     { "source": "/dashboard", "destination": "/dashboard.html" },
