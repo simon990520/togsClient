@@ -133,7 +133,7 @@
                 const formData = new FormData();
                 formData.append('human_img', rutaImagen);
                 formData.append('garm_img', ruta);
-                fetch('api/generate-image', {
+                fetch('https://togs-fru2.onrender.com/api/generate-image', {
                     method: 'POST',
                     body: formData
                 })
@@ -226,105 +226,98 @@
         
                 // Función para recuperar y mostrar los datos
                 function loadImages() {
-                    // Obtener el valor del parámetro 'closet' desde la URL
-                    const params = new URLSearchParams(window.location.search);
-                    const closetUid = params.get('closet');
-        
-                    // Referencia a los datos de la ropa en la base de datos
-                    const clothingRef = ref(database, 'clothingItems');
-        
-                    // Escuchar los datos de Firebase en tiempo real
-                    onValue(clothingRef, (snapshot) => {
-                        const clothingItems = snapshot.val();
-                        const clothingContainer = document.getElementById('clothingContainer');
-                        const carouselContainer = document.getElementById('carouselImagesContainer');
-                        clothingContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar las imágenes
-                        carouselContainer.innerHTML = ''; // Limpiar el carrusel antes de agregar los slides
-        
-                        const itemsPerSlide = 4; // Número de elementos por slide en el carrusel
-                        let slideIndex = 0; // Para controlar el índice del slide
-                        let slideDiv; // Variable para almacenar el div del slide
-        
-                        // Iterar sobre los elementos de ropa
-                        let itemCounter = 0; // Contador de elementos para agruparlos en slides
-                        for (const key in clothingItems) {
-                            if (clothingItems.hasOwnProperty(key)) {
-                                const item = clothingItems[key];
-        
-                                // Mostrar solo los elementos donde el 'uid' coincida con el parámetro 'closet'
-                                if (item.uid === closetUid) {
-                                    const imageUrl = item.image;
-                                    const name = item.name;
-        
-                                    // --- Mostrar las imágenes en el contenedor normal ---
-                                    const itemDiv = document.createElement('div');
-                                    itemDiv.className = 'col-4 p-1';
-        
-                                    // Crear el contenedor de la tarjeta
-                                    const cardDiv = document.createElement('div');
-                                    cardDiv.className = 'cardpro';
-        
-                                    // Crear el elemento de la imagen
-                                    const imgElement = document.createElement('img');
-                                    imgElement.src = imageUrl;
-                                    imgElement.className = 'img-fluid clickable-image';
-                                    imgElement.alt = name;
-        
-                                    // Agregar evento 'click' a cada imagen
-                                    imgElement.addEventListener('click', function() {
-                                        // Llamar a la función pasando la ruta de la imagen
-                                        guardarRutaImagen(imgElement.src);
-                                    });
-        
-                                    // Agregar la imagen al contenedor de la tarjeta
-                                    cardDiv.appendChild(imgElement);
-                                    // Agregar el contenedor de la tarjeta al div principal
-                                    itemDiv.appendChild(cardDiv);
-                                    // Agregar el div de la prenda al contenedor principal
-                                    clothingContainer.appendChild(itemDiv);
-        
-                                    // --- Mostrar las imágenes en el carrusel ---
-                                    if (itemCounter % itemsPerSlide === 0) {
-                                        // Crear un nuevo slide cuando el contador es múltiplo de 4
-                                        slideDiv = document.createElement('div');
-                                        slideDiv.classList.add('carousel-item');
-                                        if (slideIndex === 0) {
-                                            slideDiv.classList.add('active'); // Hacer que el primer slide sea activo
-                                        }
-                                        const rowDiv = document.createElement('div');
-                                        rowDiv.className = 'row';
-                                        slideDiv.appendChild(rowDiv);
-                                        carouselContainer.appendChild(slideDiv);
-                                        slideIndex++;
-                                    }
-        
-                                    // Crear el div de la prenda dentro del slide
-                                    const carouselItemDiv = document.createElement('div');
-                                    carouselItemDiv.className = 'col-3'; // Ajusta el tamaño de la columna
-        
-                                    const carouselCardDiv = document.createElement('div');
-                                    carouselCardDiv.className = 'cardpro';
-        
-                                    const carouselImgElement = document.createElement('img');
-                                    carouselImgElement.src = imageUrl;
-                                    carouselImgElement.className = 'img-fluid clickable-image';
-                                    carouselImgElement.alt = name;
-        
-                                    // Agregar evento 'click' a la imagen del carrusel
-                                    carouselImgElement.addEventListener('click', function() {
-                                        guardarRutaImagen(carouselImgElement.src);
-                                    });
-        
-                                    carouselCardDiv.appendChild(carouselImgElement);
-                                    carouselItemDiv.appendChild(carouselCardDiv);
-                                    slideDiv.querySelector('.row').appendChild(carouselItemDiv);
-        
-                                    itemCounter++;
+                // Referencia a los datos de la ropa en la base de datos
+                const clothingRef = ref(database, 'clothingItems');
+
+                // Escuchar los datos de Firebase en tiempo real
+                onValue(clothingRef, (snapshot) => {
+                    const clothingItems = snapshot.val();
+                    const clothingContainer = document.getElementById('clothingContainer');
+                    const carouselContainer = document.getElementById('carouselImagesContainer');
+                    clothingContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar las imágenes
+                    carouselContainer.innerHTML = ''; // Limpiar el carrusel antes de agregar los slides
+
+                    const itemsPerSlide = 4; // Número de elementos por slide en el carrusel
+                    let slideIndex = 0; // Para controlar el índice del slide
+                    let slideDiv; // Variable para almacenar el div del slide
+
+                    // Iterar sobre los elementos de ropa
+                    let itemCounter = 0; // Contador de elementos para agruparlos en slides
+                    for (const key in clothingItems) {
+                        if (clothingItems.hasOwnProperty(key)) {
+                            const item = clothingItems[key];
+                            const imageUrl = item.image;
+                            const name = item.name;
+
+                            // --- Mostrar las imágenes en el contenedor normal ---
+                            const itemDiv = document.createElement('div');
+                            itemDiv.className = 'col-4 p-1';
+
+                            // Crear el contenedor de la tarjeta
+                            const cardDiv = document.createElement('div');
+                            cardDiv.className = 'cardpro';
+
+                            // Crear el elemento de la imagen
+                            const imgElement = document.createElement('img');
+                            imgElement.src = imageUrl;
+                            imgElement.className = 'img-fluid clickable-image';
+                            imgElement.alt = name;
+
+                            // Agregar evento 'click' a cada imagen
+                            imgElement.addEventListener('click', function() {
+                                // Llamar a la función pasando la ruta de la imagen
+                                guardarRutaImagen(imgElement.src);
+                            });
+
+                            // Agregar la imagen al contenedor de la tarjeta
+                            cardDiv.appendChild(imgElement);
+                            // Agregar el contenedor de la tarjeta al div principal
+                            itemDiv.appendChild(cardDiv);
+                            // Agregar el div de la prenda al contenedor principal
+                            clothingContainer.appendChild(itemDiv);
+
+                            // --- Mostrar las imágenes en el carrusel ---
+                            if (itemCounter % itemsPerSlide === 0) {
+                                // Crear un nuevo slide cuando el contador es múltiplo de 4
+                                slideDiv = document.createElement('div');
+                                slideDiv.classList.add('carousel-item');
+                                if (slideIndex === 0) {
+                                    slideDiv.classList.add('active'); // Hacer que el primer slide sea activo
                                 }
+                                const rowDiv = document.createElement('div');
+                                rowDiv.className = 'row';
+                                slideDiv.appendChild(rowDiv);
+                                carouselContainer.appendChild(slideDiv);
+                                slideIndex++;
                             }
+
+                            // Crear el div de la prenda dentro del slide
+                            const carouselItemDiv = document.createElement('div');
+                            carouselItemDiv.className = 'col-3'; // Ajusta el tamaño de la columna
+
+                            const carouselCardDiv = document.createElement('div');
+                            carouselCardDiv.className = 'cardpro';
+
+                            const carouselImgElement = document.createElement('img');
+                            carouselImgElement.src = imageUrl;
+                            carouselImgElement.className = 'img-fluid clickable-image';
+                            carouselImgElement.alt = name;
+
+                            // Agregar evento 'click' a la imagen del carrusel
+                            carouselImgElement.addEventListener('click', function() {
+                                guardarRutaImagen(carouselImgElement.src);
+                            });
+
+                            carouselCardDiv.appendChild(carouselImgElement);
+                            carouselItemDiv.appendChild(carouselCardDiv);
+                            slideDiv.querySelector('.row').appendChild(carouselItemDiv);
+
+                            itemCounter++;
                         }
-                    });
-                }
+                    }
+                });
+            }
+
         
                 // Ejecutar la función cuando la página se carga
                 window.onload = loadImages;
