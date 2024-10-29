@@ -18,11 +18,14 @@
     <body>
         <!-- Product section-->
         <section class="py-0">
+            <div id="preloader" class="preloader">
+                <div class="spinner"></div>
+            </div>
             <div class="container px-4 px-lg-5 my-5">
                 <div class="row gx-4 gx-lg-5 align-items-center">
                     <div class="col-md-6">
                         <div class="cardfoto" id="cardFoto">
-                            <img id="humanImageUrl" class="card-img-top mb-6 mb-md-0" src="https://airecomed.com/recursos/foto.png" alt="..." />
+                            <img id="humanImageUrl" class="card-img-top mb-6 mb-md-0" src="./dist/img/file.png" alt="..." />
                             <input type="file" id="fileInput" style="display: none;" accept="image/*" />
                             <!-- Contenedor de carga -->
                             <div class="loading" id="loadingOverlay">
@@ -30,9 +33,8 @@
                             </div>
                             <!-- Botones en la parte inferior -->
                             <div class="button-container" style="display: none;">
-                                <button class="bottom-button" id="instagramButton">Instagram</button>
-                                <button class="bottom-button2" id="facebookButton">Facebook</button>
-                                <button class="bottom-button3" id="downloadButton">Descargar</button>
+                                <button class="bottom-button" id="downloadButton">Descargar</button>
+                                <button class="bottom-button2" id="facebookButton">Compartir</button>
                             </div>
                         </div>
                     </div>
@@ -74,10 +76,6 @@
         
           
         <script>
-
-        document.getElementById('instagramButton').addEventListener('click', function() {
-            alert('Aun no disponible');
-        });
 
         document.getElementById('facebookButton').addEventListener('click', function() {
             const imageUrl = document.getElementById('humanImageUrl').src;
@@ -129,33 +127,36 @@
                 
             }
 
-            function enviarImagenes(ruta,rutaImagen) {
-                const formData = new FormData();
-                formData.append('human_img', rutaImagen);
-                formData.append('garm_img', ruta);
-                fetch('api/generate-image', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.imageUrl) {
-                        console.log("Imagen generada: ", data.imageUrl);
-                        const imagen = document.getElementById('humanImageUrl');
-                        // Limpiamos el src
+            function enviarImagenes(ruta, rutaImagen) {
+            const preloader = document.getElementById('preloader'); // Obtén el preloader
+            preloader.style.display = 'flex'; // Mostrar el preloader
 
-                        // Asignamos una nueva ruta al src
-                        imagen.src = data.imageUrl;
-                        // Mostrar los botones después de cargar la imagen
-                        document.querySelector('.button-container').style.display = 'flex';
-                    } else {
-                        alert('Error al generar la imagen');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error en la solicitud:', error);
-                });
+            const formData = new FormData();
+            formData.append('human_img', rutaImagen);
+            formData.append('garm_img', ruta);
+            
+            fetch('api/generate-image', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                preloader.style.display = 'none'; // Ocultar el preloader cuando la imagen esté lista
+                if (data.imageUrl) {
+                    console.log("Imagen generada: ", data.imageUrl);
+                    const imagen = document.getElementById('humanImageUrl');
+                    imagen.src = data.imageUrl; // Asignar la nueva ruta
+                    document.querySelector('.button-container').style.display = 'flex'; // Mostrar los botones
+                } else {
+                    alert('Error al generar la imagen');
+                }
+            })
+            .catch(error => {
+                preloader.style.display = 'none'; // Asegúrate de ocultar el preloader en caso de error
+                console.error('Error en la solicitud:', error);
+            });
         }
+
 
 
             

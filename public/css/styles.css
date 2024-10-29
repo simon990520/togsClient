@@ -52,7 +52,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 95, 31, 0.253); /* Fondo semitransparente */
             justify-content: center;
             align-items: center;
             z-index: 10; /* Asegurar que esté encima */
@@ -114,4 +114,32 @@
 
 .bottom-button:hover {
     background-color: #0056b3;
+}
+
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 95, 31, 0.253); /* Fondo semitransparente */
+    z-index: 9999; /* Asegúrate de que esté por encima de otros elementos */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none; /* Ocultarlo por defecto */
+}
+
+.spinner {
+    border: 8px solid #f3f3f3; /* Color de fondo */
+    border-top: 8px solid #ff390f; /* Color de la parte superior */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite; /* Animación de giro */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
