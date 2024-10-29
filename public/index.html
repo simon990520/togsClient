@@ -133,7 +133,7 @@
                 const formData = new FormData();
                 formData.append('human_img', rutaImagen);
                 formData.append('garm_img', ruta);
-                fetch('https://togs-fru2.onrender.com/api/generate-image', {
+                fetch('api/generate-image', {
                     method: 'POST',
                     body: formData
                 })
