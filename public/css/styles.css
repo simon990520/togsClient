@@ -143,3 +143,29 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.pagination {
+    display: flex;
+    justify-content: center; /* Centra los botones horizontalmente */
+    margin-top: 20px; /* Espacio superior */
+    padding: 10px 0; /* Espacio superior e inferior */
+}
+
+.page-button {
+    background: linear-gradient(45deg, #ff390f, #fd603f); /* Degradado en 45 grados */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    padding: 10px 15px; /* Espaciado interno */
+    margin: 0 5px; /* Espaciado entre botones */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    transition: background-color 0.3s; /* Transición suave para el color de fondo */
+}
+
+.page-button:hover {
+    background: linear-gradient(45deg, #fd7459, #fc9a87); /* Degradado en 45 grados */
+}
+
+.page-button:focus {
+    outline: none; /* Eliminar el contorno al hacer clic */
+}

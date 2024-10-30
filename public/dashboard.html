@@ -110,10 +110,8 @@
               <i class="fa fa-power-off" aria-hidden="true"></i> &nbsp;
               Cerrar sesion
             </a>
-            <a href="#" class="btn" rel="noreferrer">
-              <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-              Conectar
+            <a href="#" class="btn" rel="noreferrer" id="peticionesCount">
+              
             </a>
           </h1>
           <div class="navbar-nav flex-row order-md-last">
@@ -1010,10 +1008,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase
             }
 
             // Verificar si el usuario ya tiene 9 elementos
-            if (itemCount >= 9) {
+            if (itemCount >= 100) {
                 Swal.fire({
                     title: "Límite alcanzado",
-                    text: "No puedes crear más de 9 prendas.",
+                    text: "No puedes crear más de 100 prendas.",
                     icon: "warning",
                     confirmButtonColor: "#3085d6",
                 });
@@ -1184,10 +1182,29 @@ function checkAuth() {
         window.location.href = 'login'; // Redirigir al usuario a la página de inicio
     }
 }
+function loadPeticiones(){
+  // Obtiene el uid de la URL
+  const user = JSON.parse(localStorage.getItem('user'));
+    const uid = user ? user.uid : null; // Obtener el UID del usuario
 
+    // Escucha cambios en la base de datos en tiempo real
+    const peticionesRef = ref(database, 'peticiones/' + uid);
+    onValue(peticionesRef, (snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            const count = data.count || 0; // Obtiene el número de peticiones
+            document.getElementById('peticionesCount').innerText = count + ' Peticiones'; // Actualiza el texto en el <p>
+        } else {
+            document.getElementById('peticionesCount').innerText = 0 + ' Peticiones'; // Si no existe, muestra 0
+        }
+    });
+}
 // Llamar a la función de verificación cuando la página cargue
-window.onload = checkAuth;
-window.onload = loadItems;
+window.onload = function() {
+    checkAuth();
+    loadItems();
+    loadPeticiones();
+};
 </script>
   </body>
 </html>
